@@ -47,7 +47,8 @@ def tokenize_data(data):
     token_ids_2 = _pad_seuqences(token_ids_2)
     seg_ids_1 = _pad_seuqences(seg_ids_1)
     seg_ids_2 = _pad_seuqences(seg_ids_2)
-    return token_ids_1,token_ids_2,seg_ids_1,seg_ids_2,tags
+    return np.asarray(token_ids_1),np.asarray(token_ids_2),np.asarray(seg_ids_1),\
+           np.asarray(seg_ids_2),np.asarray(tags)
 
 
 
@@ -59,4 +60,3 @@ if __name__ == '__main__':
     train_data,val_data = load_data(data_dir='./data/bq_corpus')
     token_ids_1,token_ids_2,seg_ids_1,seg_ids_2,tags = tokenize_data(val_data)
     print(tags)
-    pass

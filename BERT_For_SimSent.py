@@ -68,6 +68,9 @@ class BertModel_for_Simsent(NLUModel):
     def fit(self,X,Y,valid_data=None,epochs=6,batch_size=32):
         self.model.fit(X,Y,validation_data=valid_data,epochs=epochs,batch_size=batch_size)
 
+    def save(self,model_path,model_name):
+        self.model.save(os.path.join(model_path,'{}.h5'.format(model_name)))
+
 
 
 if __name__ == '__main__':

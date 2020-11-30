@@ -1,16 +1,19 @@
 data_dir = './data/bq_corpus'
 
 model_dir = './models/chinese_L-12_H-768_A-12'
-
-batch_size =100
+model_name = 'Sim-Sent-Bert-Base'
+batch_size =32
 epoch = 30
 seq_maxlen = 256
+
 
 bert_config = 'bert_config.json'
 bert_ckpt = 'bert_model.ckpt'
 
 
 model_save_path = './model_hub'
+
+
 learning_rate = 5e-5
 dropout=0.1
 class_num = 2
@@ -34,7 +37,9 @@ config = Config(
     learning_rate = learning_rate,
     dropout=dropout,
     class_num=class_num,
-    model_save_path=model_save_path
+    model_save_path=model_save_path,
+    is_save = False,
+    model_name = model_name,
 )
 
 if __name__ == '__main__':
