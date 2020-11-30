@@ -1,0 +1,27 @@
+import numpy as np
+import os
+
+
+def read_data(data_path):
+    data_list = []
+    with open(data_path,'r',encoding='utf-8') as fr:
+        for line in fr:
+            data_list.append(line.strip().split())
+
+    return data_list
+
+
+
+def load_data(data_dir,test_flag = False):
+    train_data = read_data(os.path.join(data_dir,'train.tsv'))
+    val_data = read_data(os.path.join(data_dir,'dev.tsv'))
+    test_data = read_data(os.path.join(data_dir, 'test.tsv'))
+
+    if test_flag:
+        return test_data
+    else:
+        return train_data,val_data
+
+
+if __name__ == '__main__':
+    load_data(data_dir='./data/bq_corpus')
