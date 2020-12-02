@@ -6,7 +6,7 @@ from BERT_For_SimSent import BertModel_for_Simsent
 from sklearn import metrics
 from utils.log_utils import Logger
 from itertools import chain
-from BERT_Tokenize import tokenize_data
+from BERT_Tokenize import tokenize_data,tokenize_data_2
 from Load_Data import load_data
 
 import argparse
@@ -31,19 +31,17 @@ def train(config):
     train_data, val_data = load_data(data_dir=config.data_dir,test_flag=False)
 
     logger.info("正在进行tokenize.....")
-    train_token_ids_1, train_token_ids_2, \
-    train_seg_ids_1, train_seg_ids_2, train_tags = tokenize_data(train_data)
+    train_token_ids, train_seg_ids, train_tags = tokenize_data_2(train_data)
 
-    val_token_ids_1, val_token_ids_2, \
-    val_seg_ids_1, val_seg_ids_2, val_tags = tokenize_data(val_data)
+    val_token_ids,val_seg_ids, val_tags = tokenize_data_2(val_data)
     logger.info("数据集一共有{}个训练数据，{}个验证数据".format(len(train_tags),len(val_tags)))
 
     sim_model = BertModel_for_Simsent()
     sim_model.model.summary()
-    print(np.shape(train_token_ids_1))
-    train_X = [train_token_ids_1,train_seg_ids_1,train_token_ids_2,train_seg_ids_2]
+
+    train_X = [train_token_ids, train_seg_ids]
     train_Y = [train_tags]
-    val_X = [val_token_ids_1,val_seg_ids_1,val_token_ids_2,val_seg_ids_2]
+    val_X = [val_token_ids,val_seg_ids]
     val_Y = [val_tags]
 
     logger.info("training.....")

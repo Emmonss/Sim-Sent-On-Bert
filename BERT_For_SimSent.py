@@ -16,7 +16,7 @@ import json
 class BertModel_for_Simsent(NLUModel):
     def __init__(self):
         self.model=None
-        self.build_model()
+        self.bert_model_2()
         self.compile_model()
 
 
@@ -30,30 +30,42 @@ class BertModel_for_Simsent(NLUModel):
                 layer._name = '{}_{}'.format(layer._name,ex_name)
         return model
 
-    def build_model(self):
-        bert1 = self.load_bert(ex_name='sent_1')
-        bert2 = self.load_bert(ex_name='sent_2')
+    def bert_model_2(self):
+        bert = self.load_bert()
+        seq, seg = bert.input
 
-        seq1,seg1 = bert1.input
-        seq2,seg2 = bert2.input
+        bert_out = bert.output
+        bert_sent = bert_out[:, 0, :]
+        bert_sent_drop = Dropout(rate=config.dropout, name="bert_sent_drop")(bert_sent)
 
-        bert_out_1 = bert1.output
-        bert_out_2 = bert2.output
+        sent_tc = Dense(config.class_num,activation='softmax',name='sim_classifier')(bert_sent_drop)
+        self.model = Model(inputs=[seq, seg], outputs=[sent_tc])
+        pass
 
-        bert_sent_1 = bert_out_1[:,0,:]
-        bert_sent_2 = bert_out_2[:, 0, :]
-
-        bert_sent_drop_1 = Dropout(rate=config.dropout,name="bert_sent1_drop")(bert_sent_1)
-        bert_sent_drop_2 = Dropout(rate=config.dropout, name="bert_sent2_drop")(bert_sent_2)
-
-        bert_sent_merge = concatenate([bert_sent_drop_1,bert_sent_drop_2], axis=1)
-        bert_sent_merge = Dropout(rate=config.dropout, name="bert_sent_merge_drop")(bert_sent_merge)
-
-        fc = Dense(300,activation='relu',name='hidden_sim')(bert_sent_merge)
-
-        output = Dense(config.class_num,activation='softmax',name='sim_classifier')(fc)
-
-        self.model = Model(inputs=[seq1,seg1,seq2,seg2],outputs=[output])
+    # def build_model(self):
+    #     bert1 = self.load_bert(ex_name='sent_1')
+    #     bert2 = self.load_bert(ex_name='sent_2')
+    #
+    #     seq1,seg1 = bert1.input
+    #     seq2,seg2 = bert2.input
+    #
+    #     bert_out_1 = bert1.output
+    #     bert_out_2 = bert2.output
+    #
+    #     bert_sent_1 = bert_out_1[:,0,:]
+    #     bert_sent_2 = bert_out_2[:, 0, :]
+    #
+    #     bert_sent_drop_1 = Dropout(rate=config.dropout,name="bert_sent1_drop")(bert_sent_1)
+    #     bert_sent_drop_2 = Dropout(rate=config.dropout, name="bert_sent2_drop")(bert_sent_2)
+    #
+    #     bert_sent_merge = concatenate([bert_sent_drop_1,bert_sent_drop_2], axis=1)
+    #     bert_sent_merge = Dropout(rate=config.dropout, name="bert_sent_merge_drop")(bert_sent_merge)
+    #
+    #     fc = Dense(300,activation='relu',name='hidden_sim')(bert_sent_merge)
+    #
+    #     output = Dense(config.class_num,activation='softmax',name='sim_classifier')(fc)
+    #
+    #     self.model = Model(inputs=[seq1,seg1,seq2,seg2],outputs=[output])
 
 
     def compile_model(self):
