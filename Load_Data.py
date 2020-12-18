@@ -6,8 +6,9 @@ def read_data(data_path):
     data_list = []
     with open(data_path,'r',encoding='utf-8') as fr:
         for line in fr:
-            data_list.append(line.strip().split())
-
+            out = line.strip().split('\t')
+            if len(out)==3:
+                data_list.append(out)
     return data_list
 
 

@@ -50,7 +50,7 @@ def tokenize_data(data):
     return np.asarray(token_ids_1),np.asarray(token_ids_2),np.asarray(seg_ids_1),\
            np.asarray(seg_ids_2),np.asarray(tags).astype(np.int32)
 
-#[CLS] token1 [SEP] token [SEP
+#[CLS] token1 [SEP] token [SEP]
 def tokenize_data_2(data):
     token_ids = []
     seg_ids = []
@@ -69,7 +69,7 @@ def tokenize_data_2(data):
     token_ids = _pad_seuqences(token_ids)
     seg_ids = _pad_seuqences(seg_ids)
 
-    return np.asarray(token_ids),np.asarray(seg_ids),np.asarray(tags).astype(np.int32)
+    return np.array(token_ids),np.array(seg_ids),np.array(tags).astype(np.int32)
 
 
 

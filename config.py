@@ -1,9 +1,11 @@
-data_dir = './data/bq_corpus'
+# data_dir = './data/lcqmc'
+data_dir = './data/paws-x-zh'
 
 model_dir = './models/chinese_L-12_H-768_A-12'
-model_name = 'Sim-Sent-Bert-Base'
-batch_size =32
-epoch = 30
+
+model_name = 'Sim-Sent-Bert-Base-'+data_dir.split('/')[-1]
+batch_size =8
+epoch = 10
 seq_maxlen = 256
 
 
@@ -14,7 +16,7 @@ bert_ckpt = 'bert_model.ckpt'
 model_save_path = './model_hub'
 
 
-learning_rate = 5e-5
+learning_rate = 1e-5
 dropout=0.1
 class_num = 2
 class Config(object):
@@ -38,7 +40,7 @@ config = Config(
     dropout=dropout,
     class_num=class_num,
     model_save_path=model_save_path,
-    is_save = False,
+    is_save = True,
     model_name = model_name,
 )
 

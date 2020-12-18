@@ -75,7 +75,7 @@ class BertModel_for_Simsent(NLUModel):
         }
         loss_weight = {'sim_classifier':1.0}
         metrics = {'sim_classifier':'acc'}
-        self.model.compile(optimizer=opt,loss=loss,loss_weight=loss_weight,metrics=metrics)
+        self.model.compile(optimizer=opt,loss=loss,metrics=metrics,loss_weights=loss_weight)
 
     def fit(self,X,Y,valid_data=None,epochs=6,batch_size=32):
         self.model.fit(X,Y,validation_data=valid_data,epochs=epochs,batch_size=batch_size)

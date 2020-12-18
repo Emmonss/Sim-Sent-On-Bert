@@ -8,12 +8,14 @@ from utils.log_utils import Logger
 from itertools import chain
 from BERT_Tokenize import tokenize_data,tokenize_data_2
 from Load_Data import load_data
-
+import tensorflow as tf
 import argparse
 import pickle
 import json
 import numpy as np
-
+gpu = tf.config.experimental.list_physical_devices(device_type='GPU')
+assert len(gpu) == 1
+tf.config.experimental.set_memory_growth(gpu[0], True)
 
 logger = Logger("Main").get_logger()
 
@@ -40,10 +42,9 @@ def train(config):
     sim_model.model.summary()
 
     train_X = [train_token_ids, train_seg_ids]
-    train_Y = [train_tags]
+    train_Y = (train_tags)
     val_X = [val_token_ids,val_seg_ids]
-    val_Y = [val_tags]
-
+    val_Y = (val_tags)
     logger.info("training.....")
     sim_model.fit(train_X,train_Y,
                   valid_data=(val_X,val_Y),
