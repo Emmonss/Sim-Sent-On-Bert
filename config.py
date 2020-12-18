@@ -1,6 +1,6 @@
 # data_dir = './data/lcqmc'
-data_dir = './data/paws-x-zh'
-
+# data_dir = './data/paws-x-zh'
+data_dir = './data/bq_corpus'
 model_dir = './models/chinese_L-12_H-768_A-12'
 
 model_name = 'Sim-Sent-Bert-Base-'+data_dir.split('/')[-1]
