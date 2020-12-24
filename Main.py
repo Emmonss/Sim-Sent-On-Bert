@@ -10,7 +10,7 @@ from BERT_Tokenize import tokenize_data,tokenize_data_2,tokenize_data_3
 from Load_Data import load_data
 import tensorflow as tf
 import argparse
-
+from tqdm import tqdm
 # gpu = tf.config.experimental.list_physical_devices(device_type='GPU')
 # assert len(gpu) == 1
 # tf.config.experimental.set_memory_growth(gpu[0], True)
@@ -100,8 +100,43 @@ def infer(config,text1,text2):
     print(res)
     pass
 
+def get_test_result(data_dir):
+    if not os.path.exists('./out'):
+        os.mkdir('./out')
+    out_name = './out/{}.tsv'.format(data_dir.split('/')[-1])
+    print(out_name)
+    fw = open(out_name,'w',encoding='utf-8')
+
+    logger.info("加载测试集")
+    test_data = load_data(data_dir=data_dir, test_flag=True)
+    model_path = os.path.join(os.path.join(config.model_save_path, config.model_name))
+    mymodel = BertModel_for_Simsent()
+    logger.info("加载模型{}".format(model_path))
+    mymodel.model = tf.keras.models.load_model('{}.h5'.format(model_path))
+    count = 0
+    for index,item in enumerate(test_data):
+        try:
+            token_ids, seg_ids = tokenize_data_3([item])
+            res = mymodel.predict([token_ids, seg_ids])
+            res = list(res[0])
+            fw.write('{}\t{}\n'.format(index,res.index(max(res))))
+            print('{}/{}'.format(count,len(test_data)))
+            # if count==10:
+            #     break
+            count+=1
+        except Exception:
+            fw.write('{}\t{}\n'.format(index,1))
+    fw.close()
+    tf.keras.backend.clear_session()
+
 if __name__ == '__main__':
-    text1 = "不要借了我是试试看能否操作的"
-    text2 = "借款审核期间能否取消借款"
+    text1 = "我现在申请微粒货？"
+    text2 = "申请贷款"
     infer(config=config,text1=text1,text2=text2)
+    # data_dir = './data/bq_corpus'
+    # get_test_result(data_dir)
+    # data_dir = './data/lcqmc'
+    # get_test_result(data_dir)
+    # data_dir = './data/paws-x-zh'
+    # get_test_result(data_dir)
 # loss: 0.7487 - acc: 0.6110 - val_loss: 0.5904 - val_acc: 0.6990

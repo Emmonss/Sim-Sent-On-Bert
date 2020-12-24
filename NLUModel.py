@@ -13,7 +13,7 @@ class NLUModel:
         self.model = None
 
     def predict(self,x):
-        print(type(self.model))
+        # print(type(self.model))
         # assert self.model == None, "model is None"
         return self.model.predict(x)
 
