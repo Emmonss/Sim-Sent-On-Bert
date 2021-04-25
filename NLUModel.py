@@ -6,6 +6,7 @@ import os
 
 def load(model_path, custom_object=None):
     new_model = NLUModel()
+
     new_model.model = load_model(model_path,custom_objects=custom_object)
 
 class NLUModel:
