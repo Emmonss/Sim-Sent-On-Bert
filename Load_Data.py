@@ -14,13 +14,12 @@ def read_data(data_path):
 
 
 def load_data(data_dir,test_flag = False):
-    train_data = read_data(os.path.join(data_dir,'train.tsv'))
-    val_data = read_data(os.path.join(data_dir,'dev.tsv'))
-    test_data = read_data(os.path.join(data_dir, 'test.tsv'))
-
     if test_flag:
+        test_data = read_data(os.path.join(data_dir, 'test.tsv'))
         return test_data
     else:
+        train_data = read_data(os.path.join(data_dir, 'train.tsv'))
+        val_data = read_data(os.path.join(data_dir, 'dev.tsv'))
         return train_data,val_data
 
 

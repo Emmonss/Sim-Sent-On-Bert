@@ -14,7 +14,7 @@ import json
 
 
 class BertModel_for_Simsent(NLUModel):
-    def __init__(self):
+    def     __init__(self):
         self.model=None
         self.bert_model_2()
         self.compile_model()
@@ -28,6 +28,7 @@ class BertModel_for_Simsent(NLUModel):
             for index in range(len(model.layers)):
                 layer = model.get_layer(index=index)
                 layer._name = '{}_{}'.format(layer._name,ex_name)
+        self.model = model
         return model
 
     def bert_model_2(self):

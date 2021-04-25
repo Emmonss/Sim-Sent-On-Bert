@@ -72,6 +72,19 @@ def tokenize_data_2(data):
     return np.array(token_ids),np.array(seg_ids),np.array(tags).astype(np.int32)
 
 
+def tokenize_data_3(data):
+    token_ids = []
+    seg_ids = []
+    token_id_1, seg_id_1 = _tokenize(data[0][0])
+    token_id_2, seg_id_2 = _tokenize(data[0][1])
+    token_id_1.extend(token_id_2[1:])
+    seg_id_1.extend([1] * len(seg_id_2[1:]))
+    token_ids.append(token_id_1)
+    seg_ids.append(seg_id_1)
+    token_ids = _pad_seuqences(token_ids)
+    seg_ids = _pad_seuqences(seg_ids)
+    return np.array(token_ids),np.array(seg_ids)
+
 
 
 
